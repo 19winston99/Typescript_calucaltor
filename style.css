@@ -1,0 +1,47 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #252525 !important;
+    width: 100vw;
+    height: 100vh;
+}
+
+#calculator {
+    background-image: url('images/wallpaper.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    width: 15em;
+    height: 22em;
+    padding: 1em;
+    box-shadow: 3px 3px 5px #f3f3f3;
+}
+
+#display {
+    text-align: center;
+    padding: 1em;
+    height: 4em;
+    background-color: #252dc581;
+    border-radius: 10px;
+}
+
+.button {
+    width: 3em;
+    height: 3em;
+}
+
+.button:hover {
+    box-shadow: inset 3px 3px 5px #252525;
+}
+
+#equal {
+    flex: 1;
+    border-radius: 19px;
+}
+
+#buttons-container {
+    padding: 0 1em;
+}
