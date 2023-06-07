@@ -1,41 +1,45 @@
 let state: number = 0;
-let firstOperator: number = 0;
-let secondOperator: number = 0;
+let firstOperand: number = 0;
+let secondOperand: number = 0;
 let result: number = 0;
 let operator: string = '';
+let display: Element | null = document.querySelector("#display");
 
-function input(e: HTMLElement): void {
-    if (!state) firstOperator += parseInt(e.innerText);
-    else secondOperator += parseInt(e.innerText);
-    document.querySelector("#display")!.innerHTML += e.innerText;
+function setOperand(e: HTMLElement): void {
+    if (!state) firstOperand += parseInt(e.innerText);
+    else secondOperand += parseInt(e.innerText);
+    display!.innerHTML += e.innerText;
 }
 
 function operation(e: HTMLElement): void {
-    const target = e as HTMLElement;
     if (state === 1) {
         calculate();
-        firstOperator = result;
-        secondOperator = 0;
+        firstOperand = result;
+        secondOperand = 0;
     }
-    operator = target.innerText;
+    operator = e.innerText;
     state = 1;
-    document.querySelector("#display")!.innerHTML += target.innerText;
+    display!.innerHTML += e.innerText;
 }
 
 function calculate(): void {
-    if (operator === "+") result = firstOperator + secondOperator;
-    else if (operator === "-") result = firstOperator - secondOperator;
-    else if (operator === "*") result = firstOperator * secondOperator;
-    else if (operator === "/") result = firstOperator / secondOperator;
+    if (operator === "+") result = firstOperand + secondOperand;
+    else if (operator === "-") result = firstOperand - secondOperand;
+    else if (operator === "*") result = firstOperand * secondOperand;
+    else if (operator === "/") result = firstOperand / secondOperand;
 
-    document.querySelector("#display")!.innerHTML = result.toFixed(0);
+    if (Number.isInteger(result)) {
+        display!.innerHTML = result.toFixed(0);
+    } else {
+        display!.innerHTML = result.toFixed(2);
+    }
     state = 0;
 }
 
 function reset(): void {
-    document.querySelector("#display")!.innerHTML = " ";
-    firstOperator = 0;
-    secondOperator = 0;
+    display!.innerHTML = " ";
+    firstOperand = 0;
+    secondOperand = 0;
     state = 0;
 }
 
