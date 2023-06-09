@@ -1,47 +1,102 @@
 "use strict";
-let state = 0;
-let firstOperand = 0;
-let secondOperand = 0;
-let result = 0;
+let state = false;
+let firstOperand = '';
+let secondOperand = '';
+let result = '';
 let operator = '';
 let display = document.querySelector("#display");
+function handleKeyDown(e) {
+    const key = e.key;
+    const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const operatorKeys = ['+', '-', '*', '/'];
+    if (numberKeys.includes(key)) {
+        const button = document.querySelector(`button[data-key="${key}"]`);
+        if (button) {
+            setOperand(button);
+        }
+    }
+    else if (operatorKeys.includes(key)) {
+        const button = document.querySelector(`button[data-operator="${key}"]`);
+        if (button) {
+            operation(button);
+        }
+    }
+    else if (key === "Enter") {
+        calculate();
+    }
+    else if (key === "Backspace") {
+        reset();
+    }
+}
 function setOperand(e) {
-    if (!state)
-        firstOperand += parseInt(e.innerText);
-    else
-        secondOperand += parseInt(e.innerText);
+    if (!state && !result) {
+        firstOperand += e.innerText;
+    }
+    else {
+        secondOperand += e.innerText;
+    }
     display.innerHTML += e.innerText;
 }
 function operation(e) {
-    if (state === 1) {
+    if (firstOperand && secondOperand) {
         calculate();
         firstOperand = result;
-        secondOperand = 0;
-    }
-    operator = e.innerText;
-    state = 1;
-    display.innerHTML += e.innerText;
-}
-function calculate() {
-    if (operator === "+")
-        result = firstOperand + secondOperand;
-    else if (operator === "-")
-        result = firstOperand - secondOperand;
-    else if (operator === "*")
-        result = firstOperand * secondOperand;
-    else if (operator === "/")
-        result = firstOperand / secondOperand;
-    if (Number.isInteger(result)) {
-        display.innerHTML = result.toFixed(0);
+        secondOperand = "";
+        operator = e.innerText;
+        display.innerHTML += e.innerText;
     }
     else {
-        display.innerHTML = result.toFixed(2);
+        operator = e.innerText;
+        display.innerHTML = firstOperand + e.innerText;
+        state = true;
     }
-    state = 0;
+}
+function calculate() {
+    if (firstOperand && secondOperand) {
+        switch (operator) {
+            case '+':
+                result = (+firstOperand + +secondOperand).toFixed(2);
+                break;
+            case '-':
+                result = (+firstOperand - +secondOperand).toFixed(2);
+                break;
+            case '*':
+                result = (+firstOperand * +secondOperand).toFixed(2);
+                break;
+            case '/':
+                result = (+firstOperand / +secondOperand).toFixed(2);
+                break;
+        }
+    }
+    else if (firstOperand && !secondOperand) {
+        switch (operator) {
+            case '+':
+                result = (+firstOperand + +firstOperand).toFixed(2);
+                break;
+            case '-':
+                result = (+firstOperand - +firstOperand).toFixed(2);
+                break;
+            case '*':
+                result = (+firstOperand * +firstOperand).toFixed(2);
+                break;
+            case '/':
+                result = (+firstOperand / +firstOperand).toFixed(2);
+                break;
+        }
+    }
+    else {
+        display.innerHTML = 'Type a correct expression';
+    }
+    display.innerHTML = result.toString();
+    firstOperand = result;
+    secondOperand = '';
+    state = false;
 }
 function reset() {
-    display.innerHTML = " ";
-    firstOperand = 0;
-    secondOperand = 0;
-    state = 0;
+    firstOperand = '';
+    secondOperand = '';
+    operator = '';
+    result = '';
+    state = false;
+    display.innerHTML = '';
 }
