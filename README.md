@@ -1,0 +1,1 @@
+A very simple calculator designed in typescript
